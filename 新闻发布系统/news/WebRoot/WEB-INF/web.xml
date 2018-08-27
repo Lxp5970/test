@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
+  <display-name></display-name>
+  <filter>
+    <filter-name>IndexFilter</filter-name>
+    <filter-class>com.news.filter.IndexFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>IndexFilter</filter-name>
+    <url-pattern>/indexServlet</url-pattern>
+  </filter-mapping>
+  <filter>
+    <filter-name>AdminFilter</filter-name>
+    <filter-class>com.news.filter.AdminFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>AdminFilter</filter-name>
+    <url-pattern>/adminServlet</url-pattern>
+  </filter-mapping>
+  <servlet>
+    <servlet-name>IndexServlet</servlet-name>
+    <servlet-class>com.news.servlet.IndexServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>IndexServlet</servlet-name>
+    <url-pattern>/indexServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>AdminServlet</servlet-name>
+    <servlet-class>com.news.servlet.AdminServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AdminServlet</servlet-name>
+    <url-pattern>/adminServlet</url-pattern>
+  </servlet-mapping>
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>
