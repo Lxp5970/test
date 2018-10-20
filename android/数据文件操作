@@ -70,7 +70,7 @@ public class SQLiteActivity extends Activity {
 			public void onClick(View arg0) {
 				ContentValues values = new ContentValues();
 				values.put("birthday", "1922-02-22");
-				long flag = db.update("mysqlite", values, "name=?", new String[]{("程媛媛")});
+				long flag = db.update("tb_student", values, "name=?", new String[]{("程媛媛")});
 				if(flag >0){
 						DBHelper.showToast(context, "数据更新成功");
 					}else{
