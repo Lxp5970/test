@@ -1,34 +1,35 @@
+package com.ch05.example;
 
-package com.ch04.example;
-import com.ch04.tools.DBHelper;
+import com.ch05.tools.DBHelper;
 
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.TextView;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-public class SQLiteActivity extends Activity {
-	private TextView txt;
-	private Button btn_create,btn_table,btn_insert,btn_update;
-	private Context context = SQLiteActivity.this;
+
+public class SqlLiteActivity extends Activity {
+	private Button btn_insert,btn_create,btn_table,btn_update,btn_delete;
+	private Context context = SqlLiteActivity.this;
 	private SQLiteDatabase db = null;
+	private String sql;
 	private void bindView(){
-		txt = (TextView)findViewById(R.id.txt_sqlite);
-		btn_create = (Button)findViewById(R.id.btn_sqlite_create);
-		btn_table = (Button)findViewById(R.id.btn_sqlite_table);
-		btn_insert = (Button)findViewById(R.id.btn_sqlite_insert);
-		btn_update = (Button)findViewById(R.id.btn_sqlite_update);
-		db = DBHelper.createDB(context, "mysqlite", Context.MODE_APPEND, null);
+		btn_create = (Button)findViewById(R.id.btn_create);
+		btn_insert = (Button)findViewById(R.id.btn_insert);
+		btn_table = (Button)findViewById(R.id.btn_table);
+		btn_update = (Button)findViewById(R.id.btn_update);
+		btn_delete = (Button)findViewById(R.id.btn_delete);
+		db = context.openOrCreateDatabase("sqllit", Context.MODE_APPEND,null);
+		//db = DBHelper.createDB(context, "mysqlite", Context.MODE_APPEND, null);
 		btn_create.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
 				if(db != null){
 					DBHelper.showToast(context, "数据库文件创建成功");
 				}else{
-					DBHelper.showToast(context, "数据库文件创建失败");
+					DBHelper.showToastLoser(context, "数据库文件创建失败");
 				}
 			}
 		});
@@ -41,7 +42,7 @@ public class SQLiteActivity extends Activity {
 					if(DBHelper.createTable(db, sql)){
 						DBHelper.showToast(context, "数据表创建成功");
 					}else{
-						DBHelper.showToast(context, "数据表创建失败");
+						DBHelper.showToastLoser(context, "数据表创建失败");
 					}
 				}
 				
@@ -49,40 +50,52 @@ public class SQLiteActivity extends Activity {
 		});
 		btn_insert.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
-				ContentValues values = new ContentValues();
-				values.put("name", "成龙龙");
-				values.put("age", 28);
+				/**ContentValues values = new ContentValues();
+				values.put("name", "龙");
+				values.put("age", 2);
 				values.put("sex", "男");
 				values.put("birthday", "1975-09-16");
 				long flag = db.insert("tb_student", null, values);
 				if(flag > 0){
 					DBHelper.showToast(context, "数据插入成功");
 				}else{
-					DBHelper.showToast(context, "数据插入失败");
-				}
-				/**
-				 * String sql = "insert into tb_student() values(?,?,?,?)";
-				Object[] params = {"程媛媛","20","女","1920-02-25"};
-				db.execSQL(sql,params);*/
+					DBHelper.showToastLoser(context, "数据插入失败");
+				}*/
+				String sql = "insert into tb_student(name,age,sex,birthday) values(?,?,?,?)";
+				Object[] params = {"程媛媛","20","女","1980-02-25"};
+				db.execSQL(sql,params);
 			}
 		});
 		btn_update.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
 				ContentValues values = new ContentValues();
-				values.put("birthday", "1922-02-22");
-				long flag = db.update("tb_student", values, "name=?", new String[]{("程媛媛")});
+				values.put("name", "小妹");
+				long flag = db.update("tb_student", values, "_id=?", new String[]{("4")});
 				if(flag >0){
 						DBHelper.showToast(context, "数据更新成功");
 					}else{
-						DBHelper.showToast(context, "数据更新失败");
+						DBHelper.showToastLoser(context, "数据更新失败");
 					}				
 			}
 		});
+		btn_delete.setOnClickListener(new OnClickListener() {
+			public void onClick(View arg0) {
+				
+				long flag = db.delete("tb_student", "_id=?", new String[]{("4")});
+				if(flag >0){
+						DBHelper.showToast(context, "数据删除成功");
+					}else{
+						DBHelper.showToastLoser(context, "数据删除失败");
+					}				
+			}
+		});
+				
 	}
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sqlite);
+        setContentView(R.layout.sqllite);
         bindView();
     }
-}
 
+    
+}
