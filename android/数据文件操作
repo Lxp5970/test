@@ -9,10 +9,11 @@ import android.widget.Button;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 public class SqlLiteActivity extends Activity {
-	private Button btn_insert,btn_create,btn_table,btn_update,btn_delete;
+	private Button btn_insert,btn_create,btn_table,btn_update,btn_delete,btn_selete;
 	private Context context = SqlLiteActivity.this;
 	private SQLiteDatabase db = null;
 	private String sql;
@@ -22,6 +23,7 @@ public class SqlLiteActivity extends Activity {
 		btn_table = (Button)findViewById(R.id.btn_table);
 		btn_update = (Button)findViewById(R.id.btn_update);
 		btn_delete = (Button)findViewById(R.id.btn_delete);
+		btn_selete = (Button)findViewById(R.id.btn_select);
 		db = context.openOrCreateDatabase("sqllit", Context.MODE_APPEND,null);
 		//db = DBHelper.createDB(context, "mysqlite", Context.MODE_APPEND, null);
 		btn_create.setOnClickListener(new OnClickListener() {
@@ -89,7 +91,24 @@ public class SqlLiteActivity extends Activity {
 					}				
 			}
 		});
+		btn_selete.setOnClickListener(new OnClickListener() {
+			public void onClick(View arg0) {
+				String sql ="select * from tb_student order by _id desc";
+				Cursor cursor = db.rawQuery(sql, null);
+				String name ="",age="",birthday="";
+				if (cursor != null){
+					while (cursor.moveToNext()) {
+						name= cursor.getString(1);
+						age = cursor.getString(2);
+						birthday = cursor.getString(4);
+					}
+					DBHelper.showToast(context, "姓名："+name+"\n年龄："+age+"岁\n"+"出生年月"+birthday);
+				}else{
+					DBHelper.showToastLoser(context, "数据查询失败");
+				}	
 				
+			}
+		});	
 	}
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
